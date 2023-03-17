@@ -1,0 +1,186 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+#ombreout {
+    border: 1px solid #3E3E3E;
+    /*padding:5px;*/
+    box-shadow: 2px 2px 10px gray;
+    -moz-box-shadow: 2px 2px 10px gray;
+    -webkit-box-shadow: 1px 2px 5px gray;
+}
+
+
+.ecriture_petit_vert {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #006600;
+    font-size: 15px;
+}
+
+.ecriture_copyright {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #006600;
+    font-size: 13px;
+}
+
+.ecriture_petit_orange {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #F19000;
+    font-size: 15px;
+}
+
+.ecriture_grand_orange {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #F19000;
+    font-size: 25px;
+}
+
+.ecriture_vert_1 {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #006600;
+    font-size: 19px;
+}
+
+.ecriture_vert_2 {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #00CC00;
+    font-size: 23px;
+}
+
+.ecriture_blanc_bienvenue {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #FFFFFF;
+    font-size: 20px;
+}
+
+.ecriture_tableau1 {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #999999;
+    font-size: 30px;
+}
+
+.ecriture_tableau2 {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #33CC00;
+    font-size: 19px;
+}
+
+.ecriture_tableau3 {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #FFFFFF;
+    font-size: 33px;
+}
+
+.ecriture_menu_orange {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #F19000;
+    font-size: 17px;
+}
+
+.border_green {
+    border: #009900 2px solid;
+}
+
+.border_gris {
+    border: #999999 1px solid;
+}
+
+.ecriture_formulaire_gris {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #666666;
+    font-size: 15px;
+}
+
+.ecriture_formulaire_gris2 {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #666666;
+    font-size: 12px;
+}
+
+.ecriture_sous_menu {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #333333;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+
+.ecriture_utilisateur_blanc {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #FFFFFF;
+    font-size: 13px;
+}
+
+.ecriture_utilisateur_blanc_gras {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+
+.bouton_connexion {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #333333;
+    font-size: 16px;
+}
+
+.bouton_connexion_gras {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #333333;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.message_erreur {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #FF0000;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.message_erreur2 {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #FF0000;
+    font-size: 15px;
+}
+
+.message_succes2 {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #009900;
+    font-size: 15px;
+}
+
+.message_succes {
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    color: #00CC00;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#liste {
+    height: 400px;
+    text-align: justify;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#liste_ecue {
+    height: 100px;
+    text-align: justify;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#liste_statistique_tableau_presidence {
+    height: 350px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+

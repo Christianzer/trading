@@ -1,0 +1,502 @@
+-- phpMyAdmin SQL Dump
+-- version 5.0.4
+-- https://www.phpmyadmin.net/
+--
+-- Hôte : localhost:3306
+-- Généré le : mar. 14 mars 2023 à 12:10
+-- Version du serveur :  5.7.33
+-- Version de PHP : 7.4.19
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de données : `trading`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `achat`
+--
+
+CREATE TABLE `achat` (
+  `id_achat` int(11) NOT NULL,
+  `code_achat` varchar(255) NOT NULL,
+  `isin` varchar(255) NOT NULL,
+  `libelle_achat` varchar(255) NOT NULL,
+  `id_code` int(11) DEFAULT NULL,
+  `id_garant` int(11) DEFAULT NULL,
+  `id_notation` int(11) DEFAULT NULL,
+  `id_type_achat` int(11) DEFAULT NULL,
+  `id_type_titre` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `achat`
+--
+
+INSERT INTO `achat` (`id_achat`, `code_achat`, `isin`, `libelle_achat`, `id_code`, `id_garant`, `id_notation`, `id_type_achat`, `id_type_titre`) VALUES
+(1, 'ABJC', 'CI0000000600', 'SERVAIR ABIDJAN  COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(2, 'BHSN.O1', 'SN0000001199', 'DIASPORA BONDS BHS 6,25% 2019-2024', 2, NULL, 2, NULL, 2),
+(3, 'BICC', 'CI0000000014', 'BICI COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(4, 'BIDC.O4', 'TG0000000934', 'BIDC-EBID 6,10% 2017-2027', 2, NULL, NULL, NULL, 2),
+(5, 'BIDC.O5', 'TG0000001304', 'BIDC-EBID 6,40% 2019-2026', 2, NULL, NULL, NULL, 2),
+(6, 'BIDC.O6', 'TG0000001585', 'BIDC-EBID 6,50% 2021-2028', 2, NULL, NULL, NULL, 2),
+(7, 'BIDC.O7', 'TG0000001833', 'BIDC-EBID 5,90% 2022-2029', 2, NULL, NULL, NULL, 2),
+(8, 'BNBC', 'CI0000000048', 'BERNABE COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(9, 'BOAB', 'BJ0000000048', 'BANK OF AFRICA BENIN', 1, NULL, NULL, NULL, 1),
+(10, 'BOABF', 'BF0000000133', 'BANK OF AFRICA BURKINA FASO', 1, NULL, NULL, NULL, 1),
+(11, 'BOAC', 'CI0000000956', 'BANK OF AFRICA COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(12, 'BOAM', 'ML0000000520', 'BANK OF AFRICA MALI', 1, NULL, NULL, NULL, 1),
+(13, 'BOAN', 'NE0000000015', 'BANK OF AFRICA NIGER', 1, NULL, NULL, NULL, 1),
+(14, 'BOAS', 'SN0000000332', 'BANK OF AFRICA SENEGAL', 1, NULL, NULL, NULL, 1),
+(15, 'CABC', 'CI0000000154', 'SICABLE COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(16, 'CBIBF', 'BF0000000604', 'CORIS BANK INTERNATIONAL BURKINA FASO', 1, NULL, NULL, NULL, 1),
+(17, 'CFAC', 'CI0000000220', 'CFAO MOTORS COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(18, 'CIEC', 'CI0000000212', 'CIE COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(19, 'CRRH.O2', 'TG0000000231', 'CRRH-UEMOA 6.10% 2012-2024', 2, 1, NULL, NULL, NULL),
+(20, 'CRRH.O3', 'TG0000000256', 'CRRH-UEMOA 6% 2013-2023', 2, 1, NULL, NULL, NULL),
+(21, 'CRRH.O4', 'TG0000000280', 'CRRH-UEMOA 6% 2014-2024', 2, 1, NULL, NULL, NULL),
+(22, 'CRRH.O5', 'TG0000000678', 'CRRH-UEMOA 5,85% 2015-2025', 2, 1, NULL, NULL, NULL),
+(23, 'CRRH.O6', 'TG0000000801', 'CRRH-UEMOA 5.85% 2016-2026', 2, 1, NULL, NULL, NULL),
+(24, 'CRRH.O7', 'TG0000000991', 'CRRH-UEMOA 5,95% 2017-2029', 2, 1, NULL, NULL, NULL),
+(25, 'CRRH.O8', 'TG0000001213', 'CRRH-UEMOA 5,95% 2018-2030', 2, 1, NULL, NULL, NULL),
+(26, 'CRRH.O9', 'TG0000001221', 'CRRH-UEMOA 6,05% 2018-2033', 2, 1, NULL, NULL, NULL),
+(27, 'ECOC', 'CI0000002424', 'ECOBANK COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(28, 'EOM.O1', 'ML0000000561', 'ETAT DU MALI 6,20% 2016-2023', 2, NULL, NULL, NULL, 3),
+(29, 'EOM.O10', 'ML0000002120', 'ETAT DU MALI 6,20% 2022-2029', 2, NULL, NULL, NULL, 3),
+(30, 'EOM.O2', 'ML0000000728', 'ETAT DU MALI 6.50% 2017-2024', 2, NULL, NULL, NULL, 3),
+(31, 'EOM.O3', 'ML0000001031', 'ETAT DU MALI 6,50% 2018-2025', 2, NULL, NULL, NULL, 3),
+(32, 'EOM.O4', 'ML0000001197', 'ETAT DU MALI 6,50% 2019-2027', 2, NULL, NULL, NULL, 3),
+(33, 'EOM.O5', 'ML0000001312', 'ETAT DU MALI 6,50% 2020-2028', 2, NULL, NULL, NULL, 3),
+(34, 'EOM.O6', 'ML0000001544', 'ETAT DU MALI 6,50% 2020-2027', 2, NULL, NULL, NULL, 3),
+(35, 'EOM.O7', 'ML0000001668', 'ETAT DU MALI 6,50% 2021-2031', 2, NULL, NULL, NULL, 3),
+(36, 'EOM.O8', 'ML0000001932', 'ETAT DU MALI 6,20% 2022-2032', 2, NULL, NULL, NULL, 3),
+(37, 'EOM.O9', 'ML0000002112', 'ETAT DU MALI 6,30% 2022-2032', 2, NULL, NULL, NULL, 3),
+(38, 'EOS.O5', 'SN0000000233', 'Etat du Senegal 6,50% 2013-2023', 2, NULL, NULL, NULL, 3),
+(39, 'EOS.O7', 'SN0000000910', 'ETAT DU SENEGAL 6.30% 2015-2025', 2, NULL, NULL, NULL, 3),
+(40, 'ETIT', 'TG0000000132', 'Ecobank Transnational Incorporated TOGO', 1, NULL, NULL, NULL, 1),
+(41, 'FNSBC.O1', 'CI0000003331', 'FCTC NSIA BANQUE 7% 2020-2025', 2, NULL, NULL, NULL, 2),
+(42, 'FORBT.O1', 'CI0000005005', 'FCTC ORABANK 7% 2021-2026', 2, NULL, NULL, NULL, 2),
+(43, 'FTIMC.O1', 'CI0000004701', 'FCTC TEYLIOM IMMO 7% 2021-2028', 2, NULL, NULL, NULL, 2),
+(44, 'FTSC', 'CI0000000121', 'FILTISAC COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(45, 'NEIC', 'CI0000000618', 'NEI-CEDA COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(46, 'NSBC', 'CI0000002416', 'NSIA BANQUE COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(47, 'NTLC', 'CI0000000295', 'NESTLE COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(48, 'ONTBF', 'BF0000000117', 'ONATEL BURKINA FASO', 1, NULL, NULL, NULL, 1),
+(49, 'ORAC', 'CI0000005864', 'ORANGE COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(50, 'ORGT', 'TG0000001239', 'ORAGROUP TOGO', 1, NULL, NULL, NULL, 1),
+(51, 'ORGT.O2', 'TG0000001726', 'ORAGROUP SA 7,15% 2021-2028', 2, NULL, NULL, NULL, 2),
+(52, 'PADS.O3', 'SN0000001454', 'PAD 6,60% 2020-2027', 2, NULL, 1, NULL, NULL),
+(53, 'PALC', 'CI0000000592', 'PALM COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(54, 'PRSC', 'CI0000000055', 'TRACTAFRIC MOTORS COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(55, 'SAFC', 'CI0000000022', 'SAFCA COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(56, 'SCRC', 'CI0000002028', 'SUCRIVOIRE COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(57, 'SDCC', 'CI0000000204', 'SODE COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(58, 'SDSC', 'CI0000000261', 'BOLLORE TRANSPORT & LOGISTICS COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(59, 'SEMC', 'CI0000000345', 'CROWN SIEM COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(60, 'SGBC', 'CI0000000030', 'SOCIETE GENERALE COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(61, 'SHEC', 'CI0000000246', 'VIVO ENERGY COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(62, 'SIBC', 'CI0000001871', 'SOCIETE IVOIRIENNE DE BANQUE COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(63, 'SICC', 'CI0000000113', 'SICOR COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(64, 'SIVC', 'CI0000000550', 'AIR LIQUIDE COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(65, 'SLBC', 'CI0000000105', 'SOLIBRA COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(66, 'SMBC', 'CI0000000170', 'SMB COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(67, 'SNLC.O1', 'SN0000001090', 'SENELEC 6,50% 2018-2025', 2, NULL, NULL, NULL, 2),
+(68, 'SNTS', 'SN0000000019', 'SONATEL SENEGAL', 1, NULL, NULL, NULL, 1),
+(69, 'SNTS.O2', 'SN0000001371', 'SONATEL 6,50% 2020-2027', 2, NULL, NULL, NULL, 2),
+(70, 'SOGC', 'CI0000000162', 'SOGB COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(71, 'SPHC', 'CI0000000196', 'SAPH COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(72, 'STAC', 'CI0000000352', 'SETAO COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(73, 'STBC', 'CI0000000097', 'SITAB COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(74, 'SUKCI.S2', 'CI0000001905', 'SUKUK ETAT DE COTE D\'IVOIRE 5,75% 2016-2023', 2, NULL, NULL, NULL, NULL),
+(75, 'SUKSN.S2', 'SN0000000985', 'SUKUK ETAT DU SENEGAL 6% 2016-2026', 2, NULL, NULL, NULL, NULL),
+(76, 'SUKTG.S1', 'TG0000000744', 'SUKUK ETAT DU TOGO 6,5% 2016-2026', 2, NULL, NULL, NULL, NULL),
+(77, 'SVOC', 'CI0000000279', 'MOVIS COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(78, 'TPBF.O10', 'BF0000001487', 'ETAT DU BURKINA 6,50% 2020-2028', 2, NULL, NULL, NULL, 3),
+(79, 'TPBF.O11', 'BF0000001537', 'ETAT DU BURKINA 6,50% 2020-2028', 2, NULL, NULL, NULL, 3),
+(80, 'TPBF.O12', 'BF0000001743', 'ETAT DU BURKINA 6,50% 2021-2031', 2, NULL, NULL, NULL, 3),
+(81, 'TPBF.O13', 'BF0000001867', 'ETAT DU BURKINA 6,50% 2021-2031', 2, NULL, NULL, NULL, 3),
+(82, 'TPBF.O14', 'BF0000002212', 'ETAT DU BURKINA 6,30% 2022-2034', 2, NULL, NULL, NULL, 3),
+(83, 'TPBF.O15', 'BF0000002287', 'ETAT DU BURKINA 6,30% 2022-2034', 2, NULL, NULL, NULL, 3),
+(84, 'TPBF.O4', 'BF0000000745', 'ETAT DU BURKINA 6.50% 2017-2027', 2, NULL, NULL, NULL, 3),
+(85, 'TPBF.O5', 'BF0000000885', 'ETAT DU BURKINA 6,50% 2017-2024', 2, NULL, NULL, NULL, 3),
+(86, 'TPBF.O6', 'BF0000000950', 'ETAT DU BURKINA 6,50% 2018-2025', 2, NULL, NULL, NULL, 3),
+(87, 'TPBF.O7', 'BF00000001131', 'ETAT DU BURKINA 6,50% 2018-2025', 2, NULL, NULL, NULL, 3),
+(88, 'TPBF.O8', 'BF0000001271', 'ETAT DU BURKINA 6,50% 2019-2027', 2, NULL, NULL, NULL, 3),
+(89, 'TPBF.O9', 'BF0000001362', 'ETAT DU BURKINA 6,50% 2019-2027', 2, NULL, NULL, NULL, 3),
+(90, 'TPBJ.O3', 'BJ0000001418', 'TPBJ 6,50% 2020-2028', 2, NULL, NULL, NULL, 3),
+(91, 'TPBJ.O4', 'BJ0000001665', 'TPBJ 5,50% 2022-2037', 2, NULL, NULL, NULL, 3),
+(92, 'TPBJ.O5', 'BJ0000001673', 'TPBJ 5,85% 2022-2042', 2, NULL, NULL, NULL, 3),
+(93, 'TPBJ.O6', 'BJ0000001764', 'TPBJ 5,75% 2022-2037', 2, NULL, NULL, NULL, 3),
+(94, 'TPCI.O17', 'CI0000001293', 'TPCI 3% 2014-2024', 2, NULL, NULL, NULL, 3),
+(95, 'TPCI.O19', 'CI0000001681', 'TPCI 5.99% 2015-2025', 2, NULL, NULL, NULL, 3),
+(96, 'TPCI.O21', 'CI0000001822', 'TPCI 6% 2016-2028', 2, NULL, NULL, NULL, 3),
+(97, 'TPCI.O22', 'CI0000001889', 'TPCI 5.90% 2016-2026', 2, NULL, NULL, NULL, 3),
+(98, 'TPCI.O23', 'CI0000002119', 'TPCI 5.90% 2016-2026', 2, NULL, NULL, NULL, 3),
+(99, 'TPCI.O24', 'CI0000002317', 'TPCI 6,25% 2017-2029', 2, NULL, NULL, NULL, 3),
+(100, 'TPCI.O25', 'CI0000002473', 'TPCI 5,95% 2017-2024 - A', 2, NULL, NULL, NULL, 3),
+(101, 'TPCI.O26', 'CI0000002481', 'TPCI 5,95% 2017-2024 - B', 2, NULL, NULL, NULL, 3),
+(102, 'TPCI.O27', 'CI0000002564', 'TPCI 6,00% 2017-2025', 2, NULL, NULL, NULL, 3),
+(103, 'TPCI.O28', 'CI0000002648', 'TPCI 6,00% 2018-2026', 2, NULL, NULL, NULL, 3),
+(104, 'TPCI.O29', 'CI0000002663', 'TPCI 6,00% 2018-2026', 2, NULL, NULL, NULL, 3),
+(105, 'TPCI.O30', 'CI0000002721', 'TPCI 5,95% 2018-2025', 2, NULL, NULL, NULL, 3),
+(106, 'TPCI.O31', 'CI0000002952', 'TPCI 5,75% 2019-2026', 2, NULL, NULL, NULL, 3),
+(107, 'TPCI.O32', 'CI0000002960', 'TPCI 2,23% 2019-2026', 2, NULL, NULL, NULL, 3),
+(108, 'TPCI.O33', 'CI0000002903', 'TPCI 5,75% 2019-2026', 2, NULL, NULL, NULL, 3),
+(109, 'TPCI.O34', 'CI0000002911', 'TPCI 6,00% 2019-2029', 2, NULL, NULL, NULL, 3),
+(110, 'TPCI.O35', 'CI0000003059', 'TPCI 5,75% 2019-2026', 2, NULL, NULL, NULL, 3),
+(111, 'TPCI.O36', 'CI0000003117', 'TPCI 5,75% 2019-2026', 2, NULL, NULL, NULL, 3),
+(112, 'TPCI.O37', 'CI0000003174', 'TPCI 5,80% 2019-2026', 2, NULL, NULL, NULL, 3),
+(113, 'TPCI.O38', 'CI0000003133', 'TPCI 5,75% 2019-2026', 2, NULL, NULL, NULL, 3),
+(114, 'TPCI.O39', 'CI0000003125', 'TPCI 5,75% 2019-2026', 2, NULL, NULL, NULL, 3),
+(115, 'TPCI.O40', 'CI0000003380', 'TPCI 5,75% 2019-2026', 2, NULL, NULL, NULL, 3),
+(116, 'TPCI.O41', 'CI0000003422', 'TPCI 5,80% 2020-2027', 2, NULL, NULL, NULL, 3),
+(117, 'TPCI.O42', 'CI0000003430', 'TPCI 5,90% 2020-2030', 2, NULL, NULL, NULL, 3),
+(118, 'TPCI.O43', 'CI0000003588', 'TPCI 5,90% 2020-2030', 2, NULL, NULL, NULL, 3),
+(119, 'TPCI.O44', 'CI0000003596', 'TPCI 5,80% 2020-2027', 2, NULL, NULL, NULL, 3),
+(120, 'TPCI.O45', 'CI0000003471', 'TPCI 5,80% 2020-2027', 2, NULL, NULL, NULL, 3),
+(121, 'TPCI.O46', 'CI0000003497', 'TPCI 5,90% 2020-2030', 2, NULL, NULL, NULL, 3),
+(122, 'TPCI.O47', 'CI0000003489', 'TPCI 5,80% 2020-2027', 2, NULL, NULL, NULL, 3),
+(123, 'TPCI.O48', 'CI0000003653', 'TPCI 5,80% 2020-2027', 2, NULL, NULL, NULL, 3),
+(124, 'TPCI.O49', 'CI0000003646', 'TPCI 5,90% 2020-2030', 2, NULL, NULL, NULL, 3),
+(125, 'TPCI.O50', 'CI0000003737', 'TPCI 5,90% 2020-2030', 2, NULL, NULL, NULL, 3),
+(126, 'TPCI.O51', 'CI0000003836', 'TPCI 5,80% 2020-2027', 2, NULL, NULL, NULL, 3),
+(127, 'TPCI.O52', 'CI0000003844', 'TPCI 5,90% 2020-2030', 2, NULL, NULL, NULL, 3),
+(128, 'TPCI.O53', 'CI0000003901', 'TPCI 5,80% 2020-2027', 2, NULL, NULL, NULL, 3),
+(129, 'TPCI.O54', 'CI0000003919', 'TPCI 5,90% 2020-2030', 2, NULL, NULL, NULL, 3),
+(130, 'TPCI.O55', 'CI0000004057', 'TPCI 5,80% 2020-2027', 2, NULL, NULL, NULL, 3),
+(131, 'TPCI.O56', 'CI0000004065', 'TPCI 5,90% 2020-2030', 2, NULL, NULL, NULL, 3),
+(132, 'TPCI.O57', 'CI0000003968', 'TPCI 5,80% 2020-2027', 2, NULL, NULL, NULL, 3),
+(133, 'TPCI.O58', 'CI0000004172', 'TPCI 5,80% 2021-2028', 2, NULL, NULL, NULL, 3),
+(134, 'TPCI.O59', 'CI0000004180', 'TPCI 5,90% 2021-2031', 2, NULL, NULL, NULL, 3),
+(135, 'TPCI.O60', 'CI0000004313', 'TPCI 5,80% 2021-2028', 2, NULL, NULL, NULL, 3),
+(136, 'TPCI.O61', 'CI0000004321', 'TPCI 5,90% 2021-2031', 2, NULL, NULL, NULL, 3),
+(137, 'TPCI.O62', 'CI0000004479', 'TPCI 5,80% 2021-2028', 2, NULL, NULL, NULL, 3),
+(138, 'TPCI.O63', 'CI0000004487', 'TPCI 5,90% 2021-2031', 2, NULL, NULL, NULL, 3),
+(139, 'TPCI.O64', 'CI0000004719', 'TPCI 5,80% 2021-2028', 2, NULL, NULL, NULL, 3),
+(140, 'TPCI.O65', 'CI0000004834', 'TPCI 5,90% 2021-2031', 2, NULL, NULL, NULL, 3),
+(141, 'TPCI.O66', 'CI0000004891', 'TPCI 5,90% 2021-2031', 2, NULL, NULL, NULL, 3),
+(142, 'TPCI.O67', 'CI0000004925', 'TPCI 5,90% 2021-2036', 2, NULL, NULL, NULL, 3),
+(143, 'TPCI.O68', 'CI0000004974', 'TPCI 5,90% 2022-2037', 2, NULL, NULL, NULL, 3),
+(144, 'TPCI.O69', 'CI0000005096', 'TPCI 5,75% 2022-2037', 2, NULL, NULL, NULL, 3),
+(145, 'TPCI.O70', 'CI0000005179', 'TPCI 5,75% 2022-2037', 2, NULL, NULL, NULL, 3),
+(146, 'TPCI.O71', 'CI0000005310', 'TPCI 5,65% 2022-2032', 2, NULL, NULL, NULL, 3),
+(147, 'TPCI.O72', 'CI0000005385', 'TPCI 5,65% 2022-2029', 2, NULL, NULL, NULL, 3),
+(148, 'TPCI.O73', 'CI0000005393', 'TPCI 5,75% 2022-2032', 2, NULL, NULL, NULL, 3),
+(149, 'TPCI.O74', 'CI0000005401', 'TPCI 5,85% 2022-2042', 2, NULL, NULL, NULL, 3),
+(150, 'TPCI.O75', 'CI0000005641', 'TPCI 5,65% 2022-2029', 2, NULL, NULL, NULL, 3),
+(151, 'TPCI.O76', 'CI0000005658', 'TPCI 5,75% 2022-2032', 2, NULL, NULL, NULL, 3),
+(152, 'TPCI.O77', 'CI0000005674', 'TPCI (TX DE BASE + SPREAD)% 2022-2029', 2, NULL, NULL, NULL, 3),
+(153, 'TPNE.O1', 'NE0000000874', 'TRESOR PUBLIC DU NIGER 6,50% 2019-2026', 2, NULL, NULL, NULL, 3),
+(154, 'TPNE.O2', 'NE0000000940', 'TRESOR PUBLIC DU NIGER 6,50% 2019-2026', 2, NULL, NULL, NULL, 3),
+(155, 'TPNE.O3', 'NE0000001088', 'TRESOR PUBLIC DU NIGER 6,50% 2020-2027', 2, NULL, NULL, NULL, 3),
+(156, 'TPNE.O4', 'NE0000001344', 'TRESOR PUBLIC DU NIGER 6,30% 2021-2031', 2, NULL, NULL, NULL, 3),
+(157, 'TPNE.O5', 'NE0000001492', 'TRESOR PUBLIC DU NIGER 6,15% 2022-2034', 2, NULL, NULL, NULL, 3),
+(158, 'TPNE.O6', 'NE0000001625', 'TRESOR PUBLIC DU NIGER 6,15% 2022-2034', 2, NULL, NULL, NULL, 3),
+(159, 'TPTG.O2', 'TG0000001890', 'TPTG 6% 2022-2037', 2, NULL, NULL, NULL, 3),
+(160, 'TTLC', 'CI0000000659', 'TOTAL COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(161, 'TTLS', 'SN0000000357', 'TOTAL SENEGAL', 1, NULL, NULL, NULL, 1),
+(162, 'UNLC', 'CI0000000287', 'UNILEVER COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1),
+(163, 'UNXC', 'CI0000000337', 'UNIWAX COTE D\'IVOIRE', 1, NULL, NULL, NULL, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `caisse`
+--
+
+CREATE TABLE `caisse` (
+  `id_caisse` int(11) NOT NULL,
+  `montant` float NOT NULL,
+  `type_caisse` int(11) NOT NULL,
+  `date_achat` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `code`
+--
+
+CREATE TABLE `code` (
+  `id_code` int(11) NOT NULL,
+  `libelle_code` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `code`
+--
+
+INSERT INTO `code` (`id_code`, `libelle_code`) VALUES
+(1, 'AC'),
+(2, 'OB');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `garant`
+--
+
+CREATE TABLE `garant` (
+  `id_garant` int(11) NOT NULL,
+  `libelle_garant` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `garant`
+--
+
+INSERT INTO `garant` (`id_garant`, `libelle_garant`) VALUES
+(1, 'Agrée par la CREMPF');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `notation`
+--
+
+CREATE TABLE `notation` (
+  `id_notation` int(11) NOT NULL,
+  `libelle_notation` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `notation`
+--
+
+INSERT INTO `notation` (`id_notation`, `libelle_notation`) VALUES
+(1, 'A-'),
+(2, 'BB');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `trade`
+--
+
+CREATE TABLE `trade` (
+  `id_trade` int(11) NOT NULL,
+  `id_achat` int(11) NOT NULL,
+  `capital` float NOT NULL,
+  `date_trade` date NOT NULL,
+  `taux` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `trade`
+--
+
+INSERT INTO `trade` (`id_trade`, `id_achat`, `capital`, `date_trade`, `taux`) VALUES
+(1, 82, 1500, '2023-03-14', 6.5),
+(2, 82, 1500, '2023-03-14', 6.5),
+(3, 64, 15000, '2023-03-14', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `type_achat`
+--
+
+CREATE TABLE `type_achat` (
+  `id_type_achat` int(11) NOT NULL,
+  `libelle_type_achat` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `type_achat`
+--
+
+INSERT INTO `type_achat` (`id_type_achat`, `libelle_type_achat`) VALUES
+(1, 'Action'),
+(2, 'Obligation');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `type_titre`
+--
+
+CREATE TABLE `type_titre` (
+  `id_type_titre` int(11) NOT NULL,
+  `libelle_type_titre` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `type_titre`
+--
+
+INSERT INTO `type_titre` (`id_type_titre`, `libelle_type_titre`) VALUES
+(1, 'Actions cotés à la BRVM'),
+(2, 'Dette d\'entreprise'),
+(3, 'Titre d\'Etat');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `vente`
+--
+
+CREATE TABLE `vente` (
+  `id_ventes` int(11) NOT NULL,
+  `id_achat` int(11) NOT NULL,
+  `ventes` float NOT NULL,
+  `date_vente` date NOT NULL,
+  `id_trade` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `vente`
+--
+
+INSERT INTO `vente` (`id_ventes`, `id_achat`, `ventes`, `date_vente`, `id_trade`) VALUES
+(1, 82, 1500, '2023-03-14', 1),
+(2, 64, 25000, '2023-03-14', 3);
+
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `achat`
+--
+ALTER TABLE `achat`
+  ADD PRIMARY KEY (`id_achat`),
+  ADD KEY `type_titre` (`id_type_titre`),
+  ADD KEY `code` (`id_code`),
+  ADD KEY `garant` (`id_garant`),
+  ADD KEY `notation` (`id_notation`),
+  ADD KEY `type_achat` (`id_type_achat`);
+
+--
+-- Index pour la table `caisse`
+--
+ALTER TABLE `caisse`
+  ADD PRIMARY KEY (`id_caisse`);
+
+--
+-- Index pour la table `code`
+--
+ALTER TABLE `code`
+  ADD PRIMARY KEY (`id_code`);
+
+--
+-- Index pour la table `garant`
+--
+ALTER TABLE `garant`
+  ADD PRIMARY KEY (`id_garant`);
+
+--
+-- Index pour la table `notation`
+--
+ALTER TABLE `notation`
+  ADD PRIMARY KEY (`id_notation`);
+
+--
+-- Index pour la table `trade`
+--
+ALTER TABLE `trade`
+  ADD PRIMARY KEY (`id_trade`);
+
+--
+-- Index pour la table `type_achat`
+--
+ALTER TABLE `type_achat`
+  ADD PRIMARY KEY (`id_type_achat`);
+
+--
+-- Index pour la table `type_titre`
+--
+ALTER TABLE `type_titre`
+  ADD PRIMARY KEY (`id_type_titre`);
+
+--
+-- Index pour la table `vente`
+--
+ALTER TABLE `vente`
+  ADD PRIMARY KEY (`id_ventes`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `achat`
+--
+ALTER TABLE `achat`
+  MODIFY `id_achat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=164;
+
+--
+-- AUTO_INCREMENT pour la table `caisse`
+--
+ALTER TABLE `caisse`
+  MODIFY `id_caisse` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `code`
+--
+ALTER TABLE `code`
+  MODIFY `id_code` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT pour la table `garant`
+--
+ALTER TABLE `garant`
+  MODIFY `id_garant` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT pour la table `notation`
+--
+ALTER TABLE `notation`
+  MODIFY `id_notation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT pour la table `trade`
+--
+ALTER TABLE `trade`
+  MODIFY `id_trade` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT pour la table `type_achat`
+--
+ALTER TABLE `type_achat`
+  MODIFY `id_type_achat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT pour la table `type_titre`
+--
+ALTER TABLE `type_titre`
+  MODIFY `id_type_titre` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT pour la table `vente`
+--
+ALTER TABLE `vente`
+  MODIFY `id_ventes` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `achat`
+--
+ALTER TABLE `achat`
+  ADD CONSTRAINT `code` FOREIGN KEY (`id_code`) REFERENCES `code` (`id_code`) ON DELETE SET NULL ON UPDATE SET NULL,
+  ADD CONSTRAINT `garant` FOREIGN KEY (`id_garant`) REFERENCES `garant` (`id_garant`) ON DELETE SET NULL ON UPDATE SET NULL,
+  ADD CONSTRAINT `notation` FOREIGN KEY (`id_notation`) REFERENCES `notation` (`id_notation`) ON DELETE SET NULL ON UPDATE SET NULL,
+  ADD CONSTRAINT `type_achat` FOREIGN KEY (`id_type_achat`) REFERENCES `type_achat` (`id_type_achat`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `type_titre` FOREIGN KEY (`id_type_titre`) REFERENCES `type_titre` (`id_type_titre`) ON DELETE SET NULL ON UPDATE SET NULL;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
