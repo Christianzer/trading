@@ -15,7 +15,7 @@ class DB
     {
         if (self::$instance == null) {
             try {
-                self::$instance = new PDO('mysql:host=127.0.0.1; dbname=trading; charset=utf8', 'root', '');
+                self::$instance = new PDO('mysql:host=127.0.0.1; dbname=trading; charset=utf8', 'root', '1234');
             } catch (PDOException $e) {
                 // Handle this properly
                 throw $e;
