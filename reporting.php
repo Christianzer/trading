@@ -6,6 +6,7 @@ $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
 
 if (isset($_POST['importer'])){
     //fichier excel
+
     if(isset($_FILES['document'])) {
         $filename = $_FILES['document']['name'];
         $filetmpname = $_FILES['document']['tmp_name'];
@@ -154,10 +155,7 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
                 <div class="col-md-8 mt-3 mb-3">
                     <div class="form-group" >
                         <label class="col-form-label-lg font-weight-bold text-uppercase">Choisir Fichier Excel</label>
-                        <input name="document" class="form-control form-control-lg" type="file" accept=".csv, .xls, .xlsx, text/csv, application/csv,
-text/comma-separated-values, application/csv, application/excel,
-application/vnd.msexcel, text/anytext, application/vnd. ms-excel,
-application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" >
+                        <input name="document" class="form-control form-control-lg" type="file" >
                     </div>
                 </div>
                 <!-- ecue -->
