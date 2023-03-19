@@ -15,7 +15,9 @@ if(isset($_POST['valider'])){
         $trade = $actions_elemenet[1];
         $capital = $_POST['capital'];
         $date_vente = $_POST['date_vente'];
-        $bdd->query("insert into vente(id_achat, ventes,date_vente,id_trade) VALUES ('$actions','$capital','$date_vente','$trade')");
+        $quantite = $_POST['quantite'];
+        $montant = $_POST['montant'];
+        $bdd->query("insert into vente(id_achat,quantite,montant, ventes,date_vente,id_trade) VALUES ('$actions',$quantite,$montant,'$capital','$date_vente','$trade')");
     }
 }
 
@@ -28,13 +30,13 @@ $reqEtbDim = $bdd->query("select * from trade join achat on trade.id_achat = ach
 $actionsDim = $reqEtbDim->fetchAll();
 $array = array();
 foreach ($actionsDim as $actions){
-    $capital = $bdd->query("select sum(capital) from trade where id_achat = {$actions['id_achat']}")->fetchColumn();
-    $ventes = $bdd->query("select sum(ventes) from vente where id_achat = {$actions['id_achat']}")->fetchColumn();
+    $capital = $bdd->query("select sum(capital),sum(quantite) from trade where id_achat = {$actions['id_achat']}")->fetch();
+    $ventes = $bdd->query("select sum(ventes),sum(quantite) from vente where id_achat = {$actions['id_achat']}")->fetch();
     $libelle_achat = $bdd->query("select libelle_achat from achat where  id_achat = {$actions['id_achat']}")->fetchColumn();
     $e = array(
         "libelle_achat"=>$libelle_achat,
-        "capital_trade"=>(float)$capital,
-        "vente_trade"=>(float)$ventes,
+        "capital_trade"=>$capital,
+        "vente_trade"=>$ventes,
 
     );
     array_push($array,$e);
@@ -98,26 +100,47 @@ foreach ($actionsDim as $actions){
         <form method="post">
             <table class="table table-striped table-bordered w-100">
                 <thead>
+
                 <tr style="font-size: 19px" class="text-uppercase font-weight-bold">
-                    <th width="70%" >
+                    <th width="60%" style="vertical-align: middle" rowspan="2">
                         Titres
                     </th>
-                    <th width="15%">
-                        Achat
+                    <th width="20%" class="text-center" colspan="2">
+                        achats
                     </th>
-                    <th width="15%">
-                        Vente
+                    <th width="20%" class="text-center" colspan="2">
+                       ventes
                     </th>
                 </tr>
+
+
+                <tr style="font-size: 19px" class="text-uppercase font-weight-bold">
+                    <th width="10%">
+                        quantite
+                    </th>
+                    <th width="10%">
+                        montant
+                    </th>
+                    <th width="10%">
+                        quantite
+                    </th>
+                    <th width="10%">
+                        montant
+                    </th>
+                </tr>
+
+
 
                 </thead>
 
                 <tbody class="text-black text-uppercase font-weight-bold" style="font-size: 20px">
                 <?php foreach ($array as $value) : ?>
                     <tr>
-                        <td width="70%"><?= $value['libelle_achat'] ?></td>
-                        <td width="15%" style="font-size: large" class="text-right text-danger"><?= number_format((float)$value['capital_trade'],'0','.',' ') ?></td>
-                        <td width="15%" style="font-size: large" class="text-right text-danger"><?= number_format((float)$value['vente_trade'],'0','.',' ') ?></td>
+                        <td width="60%"><?= $value['libelle_achat'] ?></td>
+                        <td width="10%" style="font-size: large" class="text-right text-danger"><?= number_format((float)$value['capital_trade'][1],'0','.',' ') ?></td>
+                        <td width="10%" style="font-size: large" class="text-right text-danger"><?= number_format((float)$value['capital_trade'][0],'0','.',' ') ?></td>
+                        <td width="10%" style="font-size: large" class="text-right text-danger"><?= number_format((float)$value['vente_trade'][1],'0','.',' ') ?></td>
+                        <td width="10%" style="font-size: large" class="text-right text-danger"><?= number_format((float)$value['vente_trade'][0],'0','.',' ') ?></td>
                     </tr>
 
                 <?php endforeach;?>
@@ -143,6 +166,9 @@ foreach ($actionsDim as $actions){
                 }
             });
         }).trigger("change");
+
+
+
 
 
 

@@ -61,6 +61,8 @@ function calculNumeric($x,$y){
 if (isset($_POST['controler'])){
     $actions = $_POST['actions'];
     $capital = $_POST['capital'];
+    $quantite = $_POST['quantite'];
+    $montant = $_POST['montant'];
     $date_trade = $_POST['date_trade'];
     $taux = $_POST['taux'];
     $_SESSION['select_id_achat'] = $actions;
@@ -68,6 +70,8 @@ if (isset($_POST['controler'])){
     $_SESSION['date_jour_trade'] = $date_trade;
     $_SESSION['date_jour_trade'] = $date_trade;
     $_SESSION['select_taux'] = $taux;
+
+
 
     //controle 1
     $placement_nette = (($capital * 100) / $placement_propre);
@@ -174,8 +178,10 @@ if (isset($_POST['controler'])){
     $actions = $_POST['actions'];
     $capital = $_POST['capital'];
     $date_trade = $_POST['date_trade'];
+    $quantite = $_POST['quantite'];
+    $montant = $_POST['montant'];
     if (isset($_POST['taux'])) :$taux = $_POST['taux'];else: $taux = 1 ;endif;
-    $bdd->query("insert into trade(id_achat, capital,date_trade,taux) VALUES ('$actions','$capital','$date_trade','$taux')");
+    $bdd->query("insert into trade(id_achat,quantite,montant,capital,date_trade,taux) VALUES ('$actions',$quantite,$montant,'$capital','$date_trade','$taux')");
     unset($_SESSION['select_id_achat']);
     unset($_SESSION['select_capital']) ;
     $_SESSION['select_taux'] = 1;
@@ -184,6 +190,7 @@ if (isset($_POST['controler'])){
     unset($_SESSION['select_id_achat']);
     unset($_SESSION['select_capital']) ;
     $_SESSION['select_taux'] = 1 ;
+
 
 }
 
@@ -207,7 +214,7 @@ $actions = $reqEtb->fetchAll();
                         <label for="etablissementId" class="col-form-label-lg font-weight-bold text-uppercase">Titres</label>
                         <select name="actions" id="etablissementId" class="form-control form-control-lg" required>
                             <?php foreach ($actions as $p): ?>
-                                <option value="<?php echo $p['id_achat'] ?>"<?php if (isset($_POST['controler']) && $_SESSION['select_id_achat'] === $p['id_achat']) echo 'selected'; ?>>
+                                <option value="<?php echo $p['id_achat'] ?>"<?php if (isset($_POST['controler']) && $_POST['actions'] == $p['id_achat']) echo 'selected'; ?>>
                                     <?php echo $p['libelle_achat'] ?>
                                 </option>
                             <?php endforeach; ?>
@@ -222,12 +229,25 @@ $actions = $reqEtb->fetchAll();
                 </div>
                 <!-- ecue -->
 
+                <div class="col-md-2">
+                    <div class="form-group" id="content_departement">
+                        <label for="departementId" class="col-form-label-lg font-weight-bold text-uppercase">Quantité</label>
+                        <input class="form-control form-control-lg" type="number" name="quantite" id="quantite" min="1" value="<?php if (isset($_POST['controler'])) echo $quantite; ?>">
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group" id="content_departement">
+                        <label for="departementId" class="col-form-label-lg font-weight-bold text-uppercase">Montant</label>
+                        <input class="form-control form-control-lg" type="number" name="montant" id="montant" min="0" value="<?php if (isset($_POST['controler'])) echo $montant; ?>">
+                    </div>
+                </div>
 
 
                 <div class="col-md-4">
                     <div class="form-group" id="content_departement">
                         <label for="departementId" class="col-form-label-lg font-weight-bold text-uppercase">Placement</label>
-                        <input class="form-control form-control-lg" type="number" name="capital" max="<?php echo $placement_propre ?>" value="<?php echo $_SESSION['select_capital'] ?>">
+                        <input class="form-control form-control-lg" type="number" readonly id="capital" name="capital" max="<?php echo @$placement_propre ?>" value="<?php echo $_SESSION['select_capital'] ?>">
                     </div>
                 </div>
 
@@ -482,6 +502,27 @@ $actions = $reqEtb->fetchAll();
                 }
             });
         }).trigger("change");
+
+
+        $("#quantite").on("change", function () {
+            var quantite = $(this).val();
+            var montant = $("#montant").val()
+            var placement = quantite * montant
+            $("#capital").val(placement)
+        }).trigger("change");
+
+
+
+        $("#montant").on("change", function () {
+            var montant = $(this).val();
+            var quantite = $("#quantite").val()
+            var placement = quantite * montant
+            $("#capital").val(placement)
+        }).trigger("change");
+
+
+
+
 
 
 

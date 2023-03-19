@@ -29,12 +29,38 @@ foreach ($revenus_creation_titres_etat as $item){
     $total_titres_etat_creation = $total_titres_etat_creation + $valeur_titres_etat_creation;
 }
 
+//calculpvalue
+$valorasiation_titres_etat = (int) $bdd->query("select sum(trade.capital) from trade join achat a on trade.id_achat = a.id_achat 
+                          where a.id_type_titre = 3 and MONTH(trade.date_trade) = $mois")->fetchColumn();
+
+
+
+$sum_montant_achat_titres_etat = (int) $bdd->query("select sum(trade.montant) from trade join achat a on trade.id_achat = a.id_achat 
+                          where a.id_type_titre = 3 and MONTH(trade.date_trade) = $mois")->fetchColumn();
+
+$sum_quantite_achat_titres_etat = (int) $bdd->query("select sum(trade.quantite) from trade join achat a on trade.id_achat = a.id_achat 
+                          where a.id_type_titre = 3 and MONTH(trade.date_trade) = $mois")->fetchColumn();
+
+$countNombre_achat_titres_etat = (int) $bdd->query("select count(trade.id_achat) from trade join achat a on trade.id_achat = a.id_achat 
+                          where a.id_type_titre = 3 and MONTH(trade.date_trade) = $mois")->fetchColumn();
+
+$valorasiation_cmp_titres_etat = DivisionPar0($sum_montant_achat_titres_etat,$countNombre_achat_titres_etat);
+
+$valorasiation_p_value_titres_etat = $valorasiation_titres_etat - ($valorasiation_cmp_titres_etat * $sum_quantite_achat_titres_etat);
+
+$valorasiation_p_value_pourcentage_titres_etat = 0;
 
 //mensuel
-$titres_etat[0]= $titres_etat_mois_1;
+
+$titres_etat[0]=$titres_etat_mois_1;
 $titres_etat[1]=$titres_etat_mois;
 $titres_etat[2]=$titres_etat_mensuelle;
 $titres_etat[3]=$titres_etat_annuelle;
-$titres_etat[4]=$total_titres_etat;
-$titres_etat[5]=$total_titres_etat_creation;
+$titres_etat[4]=$valorasiation_p_value_titres_etat;
+$titres_etat[5]=$valorasiation_p_value_pourcentage_titres_etat;
+$titres_etat[6]=$valorasiation_titres_etat;
+$titres_etat[7]=$total_titres_etat;
+$titres_etat[8]=$total_titres_etat_creation;
+
+
 

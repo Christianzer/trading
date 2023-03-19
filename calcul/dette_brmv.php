@@ -30,10 +30,36 @@ foreach ($revenus_creation_dettes_brvm as $item) {
 }
 
 
+//calculpvalue
+$valorasiation_dettes_brvm = (int) $bdd->query("select sum(trade.capital) from trade join achat a on trade.id_achat = a.id_achat 
+                          where a.id_type_titre = 2 and MONTH(trade.date_trade) = $mois")->fetchColumn();
+
+
+
+$sum_montant_achat_dettes_brvm = (int) $bdd->query("select sum(trade.montant) from trade join achat a on trade.id_achat = a.id_achat 
+                          where a.id_type_titre = 2 and MONTH(trade.date_trade) = $mois")->fetchColumn();
+
+$sum_quantite_achat_dettes_brvm = (int) $bdd->query("select sum(trade.quantite) from trade join achat a on trade.id_achat = a.id_achat 
+                          where a.id_type_titre = 2 and MONTH(trade.date_trade) = $mois")->fetchColumn();
+
+$countNombre_achat_dettes_brvm = (int) $bdd->query("select count(trade.id_achat) from trade join achat a on trade.id_achat = a.id_achat 
+                          where a.id_type_titre = 2 and MONTH(trade.date_trade) = $mois")->fetchColumn();
+
+$valorasiation_cmp_dettes_brvm = DivisionPar0($sum_montant_achat_dettes_brvm,$countNombre_achat_dettes_brvm);
+
+$valorasiation_p_value_dettes_brvm = $valorasiation_dettes_brvm - ($valorasiation_cmp_dettes_brvm * $sum_quantite_achat_dettes_brvm);
+
+$valorasiation_p_value_pourcentage_dettes_brvm = 0;
+
 //mensuel
-$dettes_brvm[0] = $dettes_brvm_mois_1;
-$dettes_brvm[1] = $dettes_brvm_mois;
-$dettes_brvm[2] = $dettes_brvm_mensuelle;
-$dettes_brvm[3] = $dettes_brvm_annuelle;
-$dettes_brvm[4] = $total_dettes_brvm;
-$dettes_brvm[5] = $total_dettes_brvm_creation;
+
+$dettes_brvm[0]=$dettes_brvm_mois_1;
+$dettes_brvm[1]=$dettes_brvm_mois;
+$dettes_brvm[2]=$dettes_brvm_mensuelle;
+$dettes_brvm[3]=$dettes_brvm_annuelle;
+$dettes_brvm[4]=$valorasiation_p_value_dettes_brvm;
+$dettes_brvm[5]=$valorasiation_p_value_pourcentage_dettes_brvm;
+$dettes_brvm[6]=$valorasiation_dettes_brvm;
+$dettes_brvm[7]=$total_dettes_brvm;
+$dettes_brvm[8]=$total_dettes_brvm_creation;
+

@@ -2,24 +2,33 @@
 
 require "excelzipp/autoload.php";
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-$reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+$reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+
+$base_dir  = __DIR__; // Absolute path to your installation, ex: /var/www/mywebsite
 
 if (isset($_POST['importer'])){
     //fichier excel
 
+    /*
     if(isset($_FILES['document'])) {
-        $filename = $_FILES['document']['name'];
-        $filetmpname = $_FILES['document']['tmp_name'];
-        $folder = 'excel_export/';
-        move_uploaded_file($filetmpname, $folder.$filename);
-        $excel = $folder.$filename; //chemin d'acces fichier
-        $spreadsheet = $reader->load($excel);
+        //$excels = "reporting_14-03-2023.xls";
+        //$filename = $_FILES['document']['name'];
+        //$filetmpname = $_FILES['document']['tmp_name'];
+        //$folder = 'excel_export/';
+       // move_uploaded_file($filetmpname, $folder.$filename);
+        //$excel = $base_dir."".$folder.$filename; //chemin d'acces fichier
+        //$reader->load("C:\\Users\\christian.aka\\Downloads\\MODIFIER\\" . $excels);
+        $spreadsheet = $reader->load("C:\\Users\\christian.aka\\Downloads\\MODIFIER\\" . $excels);
+
         $sheetData = $spreadsheet->getActiveSheet()->toArray();
+
         unset($sheetData[0]);
         foreach ($sheetData as $t) {
             var_dump($t);
         }
+        die();
     }
+    */
 
 }
 
@@ -36,18 +45,18 @@ $mois_1 = date('m',strtotime('-1 month'));
 $jour_restant = cal_days_in_month(CAL_GREGORIAN,$mois,$year);
 $calcul_365 = ($jour_restant / 365);
 //
-$encaisse = array(0,0,0,0,0,0);
-$titres_etat = array(0,0,0,0,0,0);
-$titres_garantie_etat = array(0,0,0,0,0,0);
-$depot_bancaire = array(0,0,0,0,0,0);
-$titre_365 = array(0,0,0,0,0,0);
-$titre_note_aaa_neg = array(0,0,0,0,0,0);
-$agrre_crpmf = array(0,0,0,0,0,0);
-$dettes_bbbb_neg = array(0,0,0,0,0,0);
-$dettes_brvm = array(0,0,0,0,0,0);
-$actions_brvm = array(0,0,0,0,0,0);
-$parts_opcvm = array(0,0,0,0,0,0);
-$total_variables = array(0,0,0,0,0,0);
+$encaisse = array(0,0,0,0,0,0,0,0,0);
+$titres_etat = array(0,0,0,0,0,0,0,0,0);
+$titres_garantie_etat = array(0,0,0,0,0,0,0,0,0);
+$depot_bancaire = array(0,0,0,0,0,0,0,0,0);
+$titre_365 = array(0,0,0,0,0,0,0,0,0);
+$titre_note_aaa_neg = array(0,0,0,0,0,0,0,0,0);
+$agrre_crpmf = array(0,0,0,0,0,0,0,0,0);
+$dettes_bbbb_neg = array(0,0,0,0,0,0,0,0,0);
+$dettes_brvm = array(0,0,0,0,0,0,0,0,0);
+$actions_brvm = array(0,0,0,0,0,0,0,0,0);
+$parts_opcvm = array(0,0,0,0,0,0,0,0,0);
+$total_variables = array(0,0,0,0,0,0,0,0,0);
 $revenu_final = 0;
 $revenu_final_pourcenatge = 0;
 $montant_atteindre = 75000000;
@@ -77,7 +86,7 @@ include "calcul/action_vrm.php";
 
 function roundElement($data){
 
-    if (is_null($data) or is_nan($data) or is_infinite($data) or $data < 0 ){
+    if (is_null($data) or is_nan($data) or is_infinite($data) ){
         $valeur = 0;
     }else{
         $valeur = $data;
@@ -118,13 +127,9 @@ $array_data = array($encaisse,$titres_etat,$titres_garantie_etat,$dettes_bbbb_ne
 $bon_valeur = array();
 
 foreach ($array_data as $item):
-    for($x = 0; $x <= 5; $x++):
-        if ($item[$x] < 0){
-            $bon_valeur[$x] = 0;
-        }else{
-            $bon_valeur[$x] = $item[$x];
-        }
-        $total_variables[$x] = $total_variables[$x] + $bon_valeur[$x];
+    for($x = 0; $x <= 8; $x++):
+
+        $total_variables[$x] = $total_variables[$x] + $item[$x];
     endfor;
 endforeach;
 
@@ -155,7 +160,9 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
                 <div class="col-md-8 mt-3 mb-3">
                     <div class="form-group" >
                         <label class="col-form-label-lg font-weight-bold text-uppercase">Choisir Fichier Excel</label>
-                        <input name="document" class="form-control form-control-lg" type="file" >
+                        <input name="document" class="form-control form-control-lg"
+                               accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                               type="file" >
                     </div>
                 </div>
                 <!-- ecue -->
@@ -185,15 +192,25 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
                 <th style="border-bottom: 2px solid #3a3b45;" class="text-white" colspan="2">
 
                 </th>
-                <th class="text-white bg-primary text-white" colspan="4">
-                    En cours
+                <th class="text-white bg-primary text-white" style="vertical-align: middle;border-bottom: 2px solid #3a3b45" colspan="4">
+                    Historiques
                 </th>
-                <th class="bg-danger text-white text-center" colspan="4">
+                <th class="bg-danger text-white text-center" style="vertical-align: middle;border-bottom: 2px solid #3a3b45" colspan="4">
                     Performances
                 </th>
-                <th class="bg-success text-white text-center" colspan="5">
+
+                <th class="bg-secondary text-white text-center" style="vertical-align: middle;border-bottom: 2px solid #3a3b45" colspan="6">
+                    Valorisation
+                </th>
+
+
+
+                <th class="bg-success text-white text-center" style="vertical-align: middle;border-bottom: 2px solid #3a3b45" colspan="5">
                     Revenu
                 </th>
+
+
+
             </tr>
 
             <tr style="font-size: 15px;vertical-align: middle" class="text-uppercase text-center font-weight-bold">
@@ -215,6 +232,22 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
                 <th colspan="2" style="border-bottom: 2px solid #3a3b45;">
                     Annuel (<?php echo $year ?>)
                 </th>
+
+
+
+                <th colspan="2" style="border-bottom: 2px solid #3a3b45;">
+                    (+)/- value
+                </th>
+
+                <th colspan="2" style="border-bottom: 2px solid #3a3b45;">
+                    (+)/-value (%)
+                </th>
+
+                <th colspan="2" style="border-bottom: 2px solid #3a3b45;">
+                    valeur
+                </th>
+
+
                 <th colspan="2" style="border-bottom: 2px solid #3a3b45;">
                     Revenu à date (<?php echo $mois.'/'.$year ?>)
                 </th>
@@ -224,6 +257,7 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
                 <th style="border-bottom: 2px solid #3a3b45;">
                     Revenu attendu
                 </th>
+
             </tr>
 
             </thead>
@@ -234,7 +268,7 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
                 <td rowspan="5" class="text-center" STYLE="vertical-align: middle;background-color: #e9ecef">Actifs liquide de niveau 1</td>
                 <td>Encaisse</td>
                 <?php
-                for($x = 0; $x <= 5; $x++):
+                for($x = 0; $x <= 8; $x++):
                     ?>
                     <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($encaisse[$x]) ?></td>
                     <td class="text-right font-weight-bold text-danger" style="font-size: 15px;background-color: #e9ecef;vertical-align: middle" rowspan="5">
@@ -248,7 +282,7 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
             <tr>
                 <td>Titres des états</td>
                 <?php
-                for($x = 0; $x <= 5; $x++):
+                for($x = 0; $x <= 8; $x++):
                     ?>
                     <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($titres_etat[$x]) ?></td>
                 <?php
@@ -258,7 +292,7 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
             <tr>
                 <td>Titres garantis par les états et institutions financières de premier rang</td>
                 <?php
-                for($x = 0; $x <= 5; $x++):
+                for($x = 0; $x <= 8; $x++):
                     ?>
                     <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($titres_garantie_etat[$x]) ?></td>
                 <?php
@@ -268,7 +302,7 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
             <tr>
                 <td>Depot bancaires</td>
                 <?php
-                for($x = 0; $x <= 5; $x++):
+                for($x = 0; $x <= 8; $x++):
                     ?>
                     <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($depot_bancaire[$x]) ?></td>
                 <?php
@@ -278,7 +312,7 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
             <tr>
                 <td>Titres de dette de - de 365 jours</td>
                 <?php
-                for($x = 0; $x <= 5; $x++):
+                for($x = 0; $x <= 8; $x++):
                     ?>
                     <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($titre_365[$x]) ?></td>
                 <?php
@@ -289,7 +323,7 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
                 <td rowspan="2" class="text-center" STYLE="vertical-align: middle;background-color: #e9ecef">Actifs liquide de niveau 2A</td>
                 <td>Titres de dettes notés au moins AA- à long terme</td>
                 <?php
-                for($x = 0; $x <= 5; $x++):
+                for($x = 0; $x <= 8; $x++):
                     ?>
                     <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($titre_note_aaa_neg[$x]) ?></td>
                     <td class="text-right font-weight-bold text-danger" style="font-size: 15px;background-color: #e9ecef;vertical-align: middle" rowspan="2">
@@ -304,7 +338,7 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
 
                 <td>Titres de dettes cotés et garantis par des garants agréés CREPMF</td>
                 <?php
-                for($x = 0; $x <= 5; $x++):
+                for($x = 0; $x <= 8; $x++):
                     ?>
                     <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($agrre_crpmf[$x]) ?></td>
 
@@ -321,7 +355,7 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
                 <td rowspan="4" class="text-center" style="vertical-align: middle;background-color: #e9ecef">Actifs liquide de niveau 2B</td>
                 <td>Titres de dettes notés entre BBB- et A+ à long terme</td>
                 <?php
-                for($x = 0; $x <= 5; $x++):
+                for($x = 0; $x <= 8; $x++):
                     ?>
                     <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($dettes_bbbb_neg[$x]) ?></td>
                     <td class="text-right font-weight-bold text-danger" style="font-size: 15px;background-color: #e9ecef;vertical-align: middle" rowspan="4">
@@ -334,7 +368,7 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
             <tr>
                 <td>Titres de dettes d'entreprises cotées à la BRVM</td>
                 <?php
-                for($x = 0; $x <= 5; $x++):
+                for($x = 0; $x <= 8; $x++):
                     ?>
                     <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($dettes_brvm[$x]) ?></td>
 
@@ -347,7 +381,7 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
             <tr>
                 <td>Actions cotées à la BRVM</td>
                 <?php
-                for($x = 0; $x <= 5; $x++):
+                for($x = 0; $x <= 8; $x++):
                     ?>
                     <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($actions_brvm[$x]) ?></td>
 
@@ -360,7 +394,7 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
             <tr>
                 <td>Parts d'OPCVM</td>
                 <?php
-                for($x = 0; $x <= 5; $x++):
+                for($x = 0; $x <= 8; $x++):
                     ?>
                     <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($parts_opcvm[$x]) ?></td>
 
@@ -378,7 +412,7 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
             <tr style="font-size: 15px" class="text-uppercase bg-danger text-white text-right font-weight-bold">
                 <td colspan="2" >Total</td>
                 <?php
-                for($x = 0; $x <= 5; $x++):
+                for($x = 0; $x <= 8; $x++):
                     ?>
                     <td>
                         <?php echo roundElement($total_variables[$x]) ?>
