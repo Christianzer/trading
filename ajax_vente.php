@@ -54,7 +54,7 @@ if (isset($_GET['etablissementId']) && !empty($_GET['etablissementId'])):
     <?php
     if ($total_titre > 0) :
         ?>
-        <div class="col-md-2">
+        <div class="col-md-3">
             <div class="form-group" id="content_departement">
                 <label for="departementId" class="col-form-label-lg font-weight-bold text-uppercase">Quantité à vendre</label>
                 <input class="form-control form-control-lg" type="number" id="quantite_vente" max="<?= $quantite_dispo ?>" required name="quantite" value="" >
@@ -66,7 +66,7 @@ if (isset($_GET['etablissementId']) && !empty($_GET['etablissementId'])):
                 <input class="form-control form-control-lg" type="number" id="montant_vente" required name="montant"  value="" >
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="form-group" id="content_departement">
                 <label for="departementId" class="col-form-label-lg font-weight-bold text-uppercase">Total Montant</label>
                 <input class="form-control form-control-lg" type="number" readonly id="capital_vente" required name="capital" value="" >

@@ -18,6 +18,15 @@ if(isset($_POST['valider'])){
         $quantite = $_POST['quantite'];
         $montant = $_POST['montant'];
         $bdd->query("insert into vente(id_achat,quantite,montant, ventes,date_vente,id_trade) VALUES ('$actions',$quantite,$montant,'$capital','$date_vente','$trade')");
+
+        echo '
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Operation effectuée avec succès!</strong> 
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+        ';
     }
 }
 

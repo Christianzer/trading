@@ -185,6 +185,15 @@ if (isset($_POST['controler'])){
     unset($_SESSION['select_id_achat']);
     unset($_SESSION['select_capital']) ;
     $_SESSION['select_taux'] = 1;
+
+    echo '
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Validation effectuée avec succès!</strong> 
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+        ';
 }else{
 
     unset($_SESSION['select_id_achat']);

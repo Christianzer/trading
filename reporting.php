@@ -2,33 +2,58 @@
 
 require "excelzipp/autoload.php";
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-$reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+$readerxlsx = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+$readerxls = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
 
-$base_dir  = __DIR__; // Absolute path to your installation, ex: /var/www/mywebsite
+$base_dir  = $_SERVER['DOCUMENT_ROOT']; // Absolute path to your installation, ex: /var/www/mywebsite
+$longeur = $base_dir."/excel_export/element.xlsx";
+//$spreadsheet = $reader->load($longeur);
+//$sheetData = $spreadsheet->getActiveSheet()->toArray();
 
 if (isset($_POST['importer'])){
     //fichier excel
 
-    /*
+
     if(isset($_FILES['document'])) {
-        //$excels = "reporting_14-03-2023.xls";
-        //$filename = $_FILES['document']['name'];
-        //$filetmpname = $_FILES['document']['tmp_name'];
-        //$folder = 'excel_export/';
-       // move_uploaded_file($filetmpname, $folder.$filename);
-        //$excel = $base_dir."".$folder.$filename; //chemin d'acces fichier
-        //$reader->load("C:\\Users\\christian.aka\\Downloads\\MODIFIER\\" . $excels);
-        $spreadsheet = $reader->load("C:\\Users\\christian.aka\\Downloads\\MODIFIER\\" . $excels);
+
+        $filename = $_FILES['document']['name'];
+        $filetmpname = $_FILES['document']['tmp_name'];
+        $ext = pathinfo($filename,PATHINFO_EXTENSION);
+        $folder = 'excel_export/';
+        move_uploaded_file($filetmpname, $folder.$filename);
+        $excelFile = $base_dir."/excel_export/".$filename;
+        if ($ext == 'xlsx'){
+            $spreadsheet = $readerxlsx->load($excelFile);
+        }else{
+            $spreadsheet = $readerxls->load($excelFile);
+        }
 
         $sheetData = $spreadsheet->getActiveSheet()->toArray();
 
         unset($sheetData[0]);
+
         foreach ($sheetData as $t) {
-            var_dump($t);
+            $id_action = (int)$t[0];
+            $quantite = (int)$t[1];
+            $prix_cmp = (int)$t[2];
+            $prix_cours = (int)$t[3];
+            $date_jour = date('Y-m-d');
+            $capital = $prix_cours * $quantite;
+            $bdd->query("insert into trade(id_achat,quantite,montant,capital,date_trade,taux) VALUES ('$id_action',$quantite,$prix_cours,'$capital','$date_jour',1)");
+
         }
-        die();
+
+        echo '
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Importation effectué avec succès!</strong> 
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+        ';
+
     }
-    */
+
 
 }
 
@@ -84,10 +109,16 @@ include "calcul/dette_brmv.php";
 include "calcul/action_vrm.php";
 
 
-function roundElement($data){
+function roundElement($type,$data){
 
-    if (is_null($data) or is_nan($data) or is_infinite($data) ){
-        $valeur = 0;
+
+    if (is_null($data) or is_nan($data) or is_infinite($data) or $data < 0 ){
+        if ($type ==4 or $type ==5){
+            $valeur = $data;
+        }else{
+            $valeur = 0;
+        }
+
     }else{
         $valeur = $data;
 
@@ -161,7 +192,7 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
                     <div class="form-group" >
                         <label class="col-form-label-lg font-weight-bold text-uppercase">Choisir Fichier Excel</label>
                         <input name="document" class="form-control form-control-lg"
-                               accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                               accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                                type="file" >
                     </div>
                 </div>
@@ -270,9 +301,9 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
                 <?php
                 for($x = 0; $x <= 8; $x++):
                     ?>
-                    <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($encaisse[$x]) ?></td>
+                    <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($x,$encaisse[$x]) ?></td>
                     <td class="text-right font-weight-bold text-danger" style="font-size: 15px;background-color: #e9ecef;vertical-align: middle" rowspan="5">
-                        <?php echo roundElement($encaisse[$x] + $titres_etat[$x] + $titres_garantie_etat[$x] + $depot_bancaire[$x] + $titre_365[$x]) ?>
+                        <?php echo roundElement($x,$encaisse[$x] + $titres_etat[$x] + $titres_garantie_etat[$x] + $depot_bancaire[$x] + $titre_365[$x]) ?>
                     </td>
                 <?php
                 endfor;
@@ -284,7 +315,7 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
                 <?php
                 for($x = 0; $x <= 8; $x++):
                     ?>
-                    <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($titres_etat[$x]) ?></td>
+                    <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($x,$titres_etat[$x]) ?></td>
                 <?php
                 endfor;
                 ?>
@@ -294,7 +325,7 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
                 <?php
                 for($x = 0; $x <= 8; $x++):
                     ?>
-                    <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($titres_garantie_etat[$x]) ?></td>
+                    <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($x,$titres_garantie_etat[$x]) ?></td>
                 <?php
                 endfor;
                 ?>
@@ -304,7 +335,7 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
                 <?php
                 for($x = 0; $x <= 8; $x++):
                     ?>
-                    <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($depot_bancaire[$x]) ?></td>
+                    <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($x,$depot_bancaire[$x]) ?></td>
                 <?php
                 endfor;
                 ?>
@@ -314,7 +345,7 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
                 <?php
                 for($x = 0; $x <= 8; $x++):
                     ?>
-                    <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($titre_365[$x]) ?></td>
+                    <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($x,$titre_365[$x]) ?></td>
                 <?php
                 endfor;
                 ?>
@@ -325,9 +356,9 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
                 <?php
                 for($x = 0; $x <= 8; $x++):
                     ?>
-                    <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($titre_note_aaa_neg[$x]) ?></td>
+                    <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($x,$titre_note_aaa_neg[$x]) ?></td>
                     <td class="text-right font-weight-bold text-danger" style="font-size: 15px;background-color: #e9ecef;vertical-align: middle" rowspan="2">
-                        <?php echo roundElement($titre_note_aaa_neg[$x] + $agrre_crpmf[$x]) ?>
+                        <?php echo roundElement($x,$titre_note_aaa_neg[$x] + $agrre_crpmf[$x]) ?>
                     </td>
                 <?php
                 endfor;
@@ -340,7 +371,7 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
                 <?php
                 for($x = 0; $x <= 8; $x++):
                     ?>
-                    <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($agrre_crpmf[$x]) ?></td>
+                    <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($x,$agrre_crpmf[$x]) ?></td>
 
                 <?php
                 endfor;
@@ -357,9 +388,9 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
                 <?php
                 for($x = 0; $x <= 8; $x++):
                     ?>
-                    <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($dettes_bbbb_neg[$x]) ?></td>
+                    <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($x,$dettes_bbbb_neg[$x]) ?></td>
                     <td class="text-right font-weight-bold text-danger" style="font-size: 15px;background-color: #e9ecef;vertical-align: middle" rowspan="4">
-                        <?php echo roundElement($dettes_bbbb_neg[$x] + $dettes_brvm[$x] + $actions_brvm[$x] + $parts_opcvm[$x]) ?>
+                        <?php echo roundElement($x,$dettes_bbbb_neg[$x] + $dettes_brvm[$x] + $actions_brvm[$x] + $parts_opcvm[$x]) ?>
                     </td>
                 <?php
                 endfor;
@@ -370,7 +401,7 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
                 <?php
                 for($x = 0; $x <= 8; $x++):
                     ?>
-                    <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($dettes_brvm[$x]) ?></td>
+                    <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($x,$dettes_brvm[$x]) ?></td>
 
                 <?php
                 endfor;
@@ -383,7 +414,7 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
                 <?php
                 for($x = 0; $x <= 8; $x++):
                     ?>
-                    <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($actions_brvm[$x]) ?></td>
+                    <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($x,$actions_brvm[$x]) ?></td>
 
                 <?php
                 endfor;
@@ -396,7 +427,7 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
                 <?php
                 for($x = 0; $x <= 8; $x++):
                     ?>
-                    <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($parts_opcvm[$x]) ?></td>
+                    <td class="text-right font-weight-bold text-danger" style="font-size: 15px;vertical-align: middle"><?php echo roundElement($x,$parts_opcvm[$x]) ?></td>
 
                 <?php
                 endfor;
@@ -415,10 +446,10 @@ $revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre
                 for($x = 0; $x <= 8; $x++):
                     ?>
                     <td>
-                        <?php echo roundElement($total_variables[$x]) ?>
+                        <?php echo roundElement($x,$total_variables[$x]) ?>
                     </td>
                     <td>
-                        <?php echo roundElement($total_variables[$x]) ?>
+                        <?php echo roundElement($x,$total_variables[$x]) ?>
                     </td>
                 <?php
                 endfor;

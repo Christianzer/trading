@@ -96,6 +96,11 @@ if ((int)$fond_propre == 0){
                 <ul class="navbar-nav d-flex align-items-center">
 
 
+                    <li class="nav-item  <?php active('titres');?>">
+                        <a class="nav-link text-uppercase font-weight-bold" href="index.php?page=titres">
+                            Titres
+                        </a>
+                    </li>
 
                     <li class="nav-item <?php active('reglementation');?>">
                         <a class="nav-link text-uppercase font-weight-bold" href="index.php?page=reglementation">
@@ -144,6 +149,8 @@ if ((int)$fond_propre == 0){
                 if (isset($_GET['page'])) {
                     switch ($_GET['page'])
                     {
+                        case 'titres': include("titre.php");
+                            break;
                         case 'reglementation': include("trade.php");
                             break;
 
@@ -159,7 +166,7 @@ if ((int)$fond_propre == 0){
                         default : include ("trade.php");
                     }
                 }else{
-                    header("Location: index.php?page=reglementation");
+                    header("Location: index.php?page=titres");
                 }
 
                 ?>
@@ -242,7 +249,7 @@ if ((int)$fond_propre == 0){
             method: 'GET',
             data: {renitialiser: 1},
             success: function (data) {
-               var rep =  confirm("Base de données rénitialisé avec success")
+                var rep =  confirm("Base de données rénitialisé avec success")
                 if (rep){
                     window.location.reload();
                 }

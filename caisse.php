@@ -4,6 +4,15 @@ if (isset($_POST['valider'])){
     $montant = $_POST['montant'];
     $date_achat = $_POST['date_achat'];
     $bdd->query("insert into caisse(type_caisse, montant,date_achat) VALUES ('$type_caisse','$montant','$date_achat')");
+
+    echo '
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Operation effectuée avec succès!</strong> 
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+        ';
 }
 
 $encaisse = $bdd->query("SELECT sum(montant) from caisse where type_caisse = 1")->fetchColumn();
