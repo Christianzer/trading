@@ -42,6 +42,10 @@ $countNombre_achat_actions_brvm = (int) $bdd->query("select count(trade.id_achat
 
 $valorasiation_cmp_actions_brvm = DivisionPar0($sum_montant_achat_actions_brvm,$countNombre_achat_actions_brvm);
 
+//var_dump($valorasiation_actions_brvm,$valorasiation_cmp_actions_brvm,$sum_quantite_achat_actions_brvm,$valorasiation_cmp_actions_brvm * $sum_quantite_achat_actions_brvm);
+//die();
+
+
 $valorasiation_p_value_actions_brvm = $valorasiation_actions_brvm - ($valorasiation_cmp_actions_brvm * $sum_quantite_achat_actions_brvm);
 
 $valorasiation_p_value_pourcentage_actions_brvm = 0;
