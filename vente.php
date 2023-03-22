@@ -96,7 +96,7 @@ function roundElementFr($data){
     if ($valeur == 0):
         return "";
     elseif (is_float($valeur)):
-        return number_format($valeur, 0, ',', ' ');
+        return number_format($valeur, 2, ',', ' ');
     else:
         return number_format($valeur, 0, ',', ' ');
     endif;
