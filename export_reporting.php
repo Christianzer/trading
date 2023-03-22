@@ -50,6 +50,59 @@ $revenu_final = 0;
 $revenu_final_pourcenatge = 0;
 $montant_atteindre = 75000000;
 
+function DivisionPar0($x,$y){
+    if ($y == 0) return 0 ; else return $x / $y;
+}
+
+function cal_percentage($num_amount, $num_total) {
+    $count1 = DivisionPar0($num_amount,$num_total);
+    $count2 = $count1 * 100;
+    return $count2;
+}
+
+
+function roundElement($type,$data){
+
+
+    if (is_null($data) or is_nan($data) or is_infinite($data) or $data < 0 ){
+        if ($type ==4 or $type ==5){
+            $valeur = $data;
+        }else{
+            $valeur = 0;
+        }
+
+    }else{
+        $valeur = $data;
+
+    }
+
+
+    if ($valeur == 0):
+        return " ";
+    elseif (is_float($valeur)):
+        return number_format($valeur, 3, ',', ' ');
+    else:
+        return number_format($valeur, 0, ',', ' ');
+    endif;
+
+}
+
+function roundElementPvalue($data){
+    if (is_null($data) or is_nan($data) or is_infinite($data) or $data < 0 ){
+        $valeur = 0;
+    }else{
+        $valeur = round($data,3);
+
+    }
+
+    if (is_float($data))
+        return number_format($valeur, 3, ',', ' ');
+    else
+        return number_format($valeur, 0, ',', ' ');
+
+
+}
+
 
 //encaisse
 include "calcul/encaisse.php";
@@ -75,21 +128,6 @@ include "calcul/action_vrm.php";
 
 
 
-function roundElementPvalue($data){
-    if (is_null($data) or is_nan($data) or is_infinite($data)){
-        $valeur = 0;
-    }else{
-        $valeur = round($data,3);
-
-    }
-
-    if (is_float($data))
-        return number_format($valeur, 3, ',', ' ');
-    else
-        return number_format($valeur, 0, ',', ' ');
-
-
-}
 
 
 
@@ -108,30 +146,10 @@ foreach ($array_data as $item):
 
 endforeach;
 
-function calculerPourcentage($valeur, $total) {
-    $pourcentage = ($valeur / $total) * 100;
-    return $pourcentage;
-}
 
-$revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre);
-
-function roundElement($data){
-
-    if (is_null($data) or is_nan($data) or is_infinite($data) or $data<0){
-        $valeur = 0;
-    }else{
-        $valeur = $data;
-
-    }
+$revenu_final_pourcenatge = cal_percentage($revenu_final,$montant_atteindre);
 
 
-
-    if (is_float($valeur))
-        return number_format($valeur, 3, ',', ' ');
-    else
-        return number_format($valeur, 0, ',', ' ');
-
-}
 
 $roundElement = 'roundElement';
 

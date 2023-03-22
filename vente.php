@@ -6,7 +6,11 @@ function DivisionPar0($x,$y){
     if ($y == 0) return 0 ; else return $x / $y;
 }
 
-
+function cal_percentage($num_amount, $num_total) {
+    $count1 = DivisionPar0($num_amount,$num_total);
+    $count2 = $count1 * 100;
+    return $count2;
+}
 
 //les contraintes
 if(isset($_POST['valider'])){
@@ -52,13 +56,16 @@ foreach ($actionsDim as $actions){
     $reel =  $bdd->query("select montant from import where id_achat = {$actions['id_achat']}")->fetchColumn();
     $totalCmp = $cmp * $quantite;
     $totalEncours = $reel * $quantite;
+    $pvalue = $totalEncours - $totalCmp;
+    $pvaluePourcent = cal_percentage($pvalue,$totalEncours);
 
     $Trade = array(
         "libelle"=>$libelle_achat,
         "quantite"=>$quantite,
         "cmp"=>$cmp,
         "reel"=>$reel,
-        "totalCmp"=>$totalCmp,
+        "pvalue"=>$pvalue,
+        "pvaluPourcentage"=>$pvaluePourcent,
         "totalEncours"=>$totalEncours,
 
     );
@@ -76,7 +83,7 @@ foreach ($actionsDim as $actions){
 
 function roundElementFr($data){
 
-    if (is_null($data) or is_nan($data) or is_infinite($data) or $data < 0 ){
+    if (is_null($data) or is_nan($data) or is_infinite($data)){
 
         $valeur = 0;
 
@@ -152,17 +159,12 @@ function roundElementFr($data){
         <table class="table table-striped table-bordered w-100">
             <thead>
 
-            <tr style="font-size: 19px" class="text-uppercase font-weight-bold">
-                <th width="50%"  style="vertical-align: middle" rowspan="2">
-                    Titres
-                </th>
-                <th width="50%" class="text-center" colspan="6">
-                    achats
-                </th>
-            </tr>
 
 
             <tr style="font-size: 19px" class="text-uppercase font-weight-bold">
+                <th>
+                    titres
+                </th>
                 <th width="10%">
                     quantite
                 </th>
@@ -170,13 +172,17 @@ function roundElementFr($data){
                     cmp
                 </th>
                 <th width="10%">
-                    encours
+                    cours
                 </th>
                 <th width="10%">
-                    total(cmp)
+                    +/-Val
                 </th>
                 <th width="10%">
-                    total(encours)
+                    +/-Val
+                    (%)
+                </th>
+                <th width="10%">
+                   Valeur
                 </th>
             </tr>
 
@@ -187,11 +193,12 @@ function roundElementFr($data){
             <tbody class="text-black text-uppercase font-weight-bold" style="font-size: 20px">
             <?php foreach ($arrayTrade as $value) : ?>
                 <tr>
-                    <td width="50%"><?= $value['libelle'] ?></td>
+                    <td><?= $value['libelle'] ?></td>
                     <td width="10%" style="font-size: large" class="text-right text-danger"><?=roundElementFr($value['quantite'])?></td>
                     <td width="10%" style="font-size: large" class="text-right text-danger"><?=roundElementFr($value['cmp'])?></td>
                     <td width="10%" style="font-size: large" class="text-right text-danger"><?=roundElementFr($value['reel'])?></td>
-                    <td width="10%" style="font-size: large" class="text-right text-danger"><?=roundElementFr($value['totalCmp'])?></td>
+                    <td width="10%" style="font-size: large" class="text-right text-danger"><?=roundElementFr($value['pvalue'])?></td>
+                    <td width="10%" style="font-size: large" class="text-right text-danger"><?=roundElementFr($value['pvaluPourcentage'])?></td>
                     <td width="10%" style="font-size: large" class="text-right text-danger"><?=roundElementFr($value['totalEncours'])?></td>
 
                 </tr>

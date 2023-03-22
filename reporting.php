@@ -63,52 +63,6 @@ function DivisionPar0($x,$y){
     if ($y == 0) return 0 ; else return $x / $y;
 }
 
-$plafond_sommaire = 1000000000;
-$mois = date('m');
-$year = date('Y');
-$mois_1 = date('m',strtotime('-1 month'));
-$jour_restant = cal_days_in_month(CAL_GREGORIAN,$mois,$year);
-$calcul_365 = ($jour_restant / 365);
-//
-$encaisse = array(0,0,0,0,0,0,0,0,0);
-$titres_etat = array(0,0,0,0,0,0,0,0,0);
-$titres_garantie_etat = array(0,0,0,0,0,0,0,0,0);
-$depot_bancaire = array(0,0,0,0,0,0,0,0,0);
-$titre_365 = array(0,0,0,0,0,0,0,0,0);
-$titre_note_aaa_neg = array(0,0,0,0,0,0,0,0,0);
-$agrre_crpmf = array(0,0,0,0,0,0,0,0,0);
-$dettes_bbbb_neg = array(0,0,0,0,0,0,0,0,0);
-$dettes_brvm = array(0,0,0,0,0,0,0,0,0);
-$actions_brvm = array(0,0,0,0,0,0,0,0,0);
-$parts_opcvm = array(0,0,0,0,0,0,0,0,0);
-$total_variables = array(0,0,0,0,0,0,0,0,0);
-$revenu_final = 0;
-$revenu_final_pourcenatge = 0;
-$montant_atteindre = 75000000;
-
-
-//encaisse
-include "calcul/encaisse.php";
-
-
-//titres_etat
-include "calcul/titre_etat.php";
-
-
-//depot_bancaire
-include "calcul/depot_banque.php";
-
-
-//agrre crmpf
-include "calcul/agrree_crmpf.php";
-
-//dette_brvm
-include "calcul/dette_brmv.php";
-
-//actions_brvm
-include "calcul/action_vrm.php";
-
-
 function cal_percentage($num_amount, $num_total) {
     $count1 = DivisionPar0($num_amount,$num_total);
     $count2 = $count1 * 100;
@@ -158,6 +112,55 @@ function roundElementPvalue($data){
 
 }
 
+$plafond_sommaire = 1000000000;
+$mois = date('m');
+$year = date('Y');
+$mois_1 = date('m',strtotime('-1 month'));
+$jour_restant = cal_days_in_month(CAL_GREGORIAN,$mois,$year);
+$calcul_365 = ($jour_restant / 365);
+//
+$encaisse = array(0,0,0,0,0,0,0,0,0);
+$titres_etat = array(0,0,0,0,0,0,0,0,0);
+$titres_garantie_etat = array(0,0,0,0,0,0,0,0,0);
+$depot_bancaire = array(0,0,0,0,0,0,0,0,0);
+$titre_365 = array(0,0,0,0,0,0,0,0,0);
+$titre_note_aaa_neg = array(0,0,0,0,0,0,0,0,0);
+$agrre_crpmf = array(0,0,0,0,0,0,0,0,0);
+$dettes_bbbb_neg = array(0,0,0,0,0,0,0,0,0);
+$dettes_brvm = array(0,0,0,0,0,0,0,0,0);
+$actions_brvm = array(0,0,0,0,0,0,0,0,0);
+$parts_opcvm = array(0,0,0,0,0,0,0,0,0);
+$total_variables = array(0,0,0,0,0,0,0,0,0);
+$revenu_final = 0;
+$revenu_final_pourcenatge = 0;
+$montant_atteindre = 75000000;
+
+
+//encaisse
+include "calcul/encaisse.php";
+
+
+//titres_etat
+include "calcul/titre_etat.php";
+
+
+//depot_bancaire
+include "calcul/depot_banque.php";
+
+
+//agrre crmpf
+include "calcul/agrree_crmpf.php";
+
+//dette_brvm
+include "calcul/dette_brmv.php";
+
+//actions_brvm
+include "calcul/action_vrm.php";
+
+
+
+
+
 
 
 $array_data = array($encaisse,$titres_etat,$titres_garantie_etat,$dettes_bbbb_neg,$depot_bancaire,$agrre_crpmf,$titre_365,$dettes_brvm,$actions_brvm,$parts_opcvm,$titre_note_aaa_neg);
@@ -177,12 +180,9 @@ foreach ($array_data as $item):
 
 endforeach;
 
-function calculerPourcentage($valeur, $total) {
-    $pourcentage = ($valeur / $total) * 100;
-    return $pourcentage;
-}
 
-$revenu_final_pourcenatge = calculerPourcentage($revenu_final,$montant_atteindre);
+
+$revenu_final_pourcenatge = cal_percentage($revenu_final,$montant_atteindre);
 
 ?>
 
