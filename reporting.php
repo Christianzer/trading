@@ -35,12 +35,9 @@ if (isset($_POST['importer'])){
         foreach ($sheetData as $t) {
             $id_action = (int)$t[0];
             $quantite = (int)$t[1];
-            $prix_cmp = (int)$t[2];
             $prix_cours = (int)$t[3];
             $date_jour = date('Y-m-d');
-            $capital = $prix_cours * $quantite;
-            $bdd->query("insert into trade(id_achat,quantite,montant,capital,date_trade,taux) VALUES ('$id_action',$quantite,$prix_cours,'$capital','$date_jour',1)");
-
+            $bdd->query("insert into import(id_achat, montant, date_import) VALUES ('$id_action',$prix_cours,'$date_jour')");
         }
 
         echo '
