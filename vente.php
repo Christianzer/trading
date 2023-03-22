@@ -2,7 +2,9 @@
 
 $_SESSION['date_jour_vente'] = date('Y-m-d');
 
-
+function DivisionPar0($x,$y){
+    if ($y == 0) return 0 ; else return $x / $y;
+}
 
 
 
@@ -37,21 +39,62 @@ $actionsEL = $reqEtb->fetchAll();
 
 $reqEtbDim = $bdd->query("select * from trade join achat on trade.id_achat = achat.id_achat group by achat.id_achat order by achat.libelle_achat ASC ");
 $actionsDim = $reqEtbDim->fetchAll();
-$array = array();
+$arrayTrade = array();
+$arrayVente = array();
 foreach ($actionsDim as $actions){
-    $capital = $bdd->query("select sum(capital),sum(quantite) from trade where id_achat = {$actions['id_achat']}")->fetch();
-    $ventes = $bdd->query("select sum(ventes),sum(quantite) from vente where id_achat = {$actions['id_achat']}")->fetch();
     $libelle_achat = $bdd->query("select libelle_achat from achat where  id_achat = {$actions['id_achat']}")->fetchColumn();
-    $e = array(
-        "libelle_achat"=>$libelle_achat,
-        "capital_trade"=>$capital,
-        "vente_trade"=>$ventes,
+
+    $capital = $bdd->query("select sum(capital),sum(quantite) from trade where id_achat = {$actions['id_achat']}")->fetch();
+    $nbreInsert = $bdd->query("select count(id_trade) from trade where id_achat = {$actions['id_achat']}")->fetchColumn();
+    $montantNette = $capital[0];
+    $quantite = $capital[1];
+    $cmp = DivisionPar0($montantNette,$nbreInsert);
+    $reel =  $bdd->query("select montant from import where id_achat = {$actions['id_achat']}")->fetchColumn();
+    $totalCmp = $cmp * $quantite;
+    $totalEncours = $reel * $quantite;
+
+    $Trade = array(
+        "libelle"=>$libelle_achat,
+        "quantite"=>$quantite,
+        "cmp"=>$cmp,
+        "reel"=>$reel,
+        "totalCmp"=>$totalCmp,
+        "totalEncours"=>$totalEncours,
 
     );
-    array_push($array,$e);
+    array_push($arrayTrade,$Trade);
+
+    $ventes = $bdd->query("select sum(ventes),sum(quantite) from vente where id_achat = {$actions['id_achat']}")->fetch();
+    $TradeVente = array(
+        "libelle_achat"=>$libelle_achat,
+        "vente_trade"=>$ventes[0],
+        "quantite_trade"=>$ventes[1],
+    );
+    array_push($arrayVente,$TradeVente);
 }
 
 
+function roundElementFr($data){
+
+    if (is_null($data) or is_nan($data) or is_infinite($data) or $data < 0 ){
+
+        $valeur = 0;
+
+    }else{
+        $valeur = $data;
+
+    }
+
+
+    if ($valeur == 0):
+        return "";
+    elseif (is_float($valeur)):
+        return number_format($valeur, 0, ',', ' ');
+    else:
+        return number_format($valeur, 0, ',', ' ');
+    endif;
+
+}
 
 ?>
 
@@ -106,56 +149,94 @@ foreach ($actionsDim as $actions){
         <h3 class="m-0 font-weight-bold text-uppercase text-primary">Liste des titres achétés</h3>
     </div>
     <div class="card-body">
-        <form method="post">
-            <table class="table table-striped table-bordered w-100">
-                <thead>
+        <table class="table table-striped table-bordered w-100">
+            <thead>
 
-                <tr style="font-size: 19px" class="text-uppercase font-weight-bold">
-                    <th width="60%" style="vertical-align: middle" rowspan="2">
-                        Titres
-                    </th>
-                    <th width="20%" class="text-center" colspan="2">
-                        achats
-                    </th>
-                    <th width="20%" class="text-center" colspan="2">
-                       ventes
-                    </th>
+            <tr style="font-size: 19px" class="text-uppercase font-weight-bold">
+                <th width="50%"  style="vertical-align: middle" rowspan="2">
+                    Titres
+                </th>
+                <th width="50%" class="text-center" colspan="6">
+                    achats
+                </th>
+            </tr>
+
+
+            <tr style="font-size: 19px" class="text-uppercase font-weight-bold">
+                <th width="10%">
+                    quantite
+                </th>
+                <th width="10%">
+                    cmp
+                </th>
+                <th width="10%">
+                    encours
+                </th>
+                <th width="10%">
+                    total(cmp)
+                </th>
+                <th width="10%">
+                    total(encours)
+                </th>
+            </tr>
+
+
+
+            </thead>
+
+            <tbody class="text-black text-uppercase font-weight-bold" style="font-size: 20px">
+            <?php foreach ($arrayTrade as $value) : ?>
+                <tr>
+                    <td width="50%"><?= $value['libelle'] ?></td>
+                    <td width="10%" style="font-size: large" class="text-right text-danger"><?=roundElementFr($value['quantite'])?></td>
+                    <td width="10%" style="font-size: large" class="text-right text-danger"><?=roundElementFr($value['cmp'])?></td>
+                    <td width="10%" style="font-size: large" class="text-right text-danger"><?=roundElementFr($value['reel'])?></td>
+                    <td width="10%" style="font-size: large" class="text-right text-danger"><?=roundElementFr($value['totalCmp'])?></td>
+                    <td width="10%" style="font-size: large" class="text-right text-danger"><?=roundElementFr($value['totalEncours'])?></td>
+
                 </tr>
 
+            <?php endforeach;?>
+            </tbody>
+        </table>
+        <table class="table table-striped table-bordered w-100">
+            <thead>
 
-                <tr style="font-size: 19px" class="text-uppercase font-weight-bold">
-                    <th width="10%">
-                        quantite
-                    </th>
-                    <th width="10%">
-                        montant
-                    </th>
-                    <th width="10%">
-                        quantite
-                    </th>
-                    <th width="10%">
-                        montant
-                    </th>
+            <tr style="font-size: 19px" class="text-uppercase font-weight-bold">
+                <th width="70%"  style="vertical-align: middle" rowspan="2">
+                    Titres
+                </th>
+                <th width="30%" class="text-center" colspan="3">
+                    ventes
+                </th>
+            </tr>
+
+
+            <tr style="font-size: 19px" class="text-uppercase font-weight-bold">
+                <th width="10%">
+                    quantite
+                </th>
+                <th width="10%">
+                    total
+                </th>
+            </tr>
+
+
+
+            </thead>
+
+            <tbody class="text-black text-uppercase font-weight-bold" style="font-size: 20px">
+            <?php foreach ($arrayVente as $value) : ?>
+                <tr>
+                    <td width="70%"><?= $value['libelle_achat'] ?></td>
+                    <td width="10%" style="font-size: large" class="text-right text-danger"><?=roundElementFr($value['quantite_trade'])?></td>
+                    <td width="10%" style="font-size: large" class="text-right text-danger"><?=roundElementFr($value['vente_trade'])?></td>
+
                 </tr>
 
-
-
-                </thead>
-
-                <tbody class="text-black text-uppercase font-weight-bold" style="font-size: 20px">
-                <?php foreach ($array as $value) : ?>
-                    <tr>
-                        <td width="60%"><?= $value['libelle_achat'] ?></td>
-                        <td width="10%" style="font-size: large" class="text-right text-danger"><?= number_format((float)$value['capital_trade'][1],'0','.',' ') ?></td>
-                        <td width="10%" style="font-size: large" class="text-right text-danger"><?= number_format((float)$value['capital_trade'][0],'0','.',' ') ?></td>
-                        <td width="10%" style="font-size: large" class="text-right text-danger"><?= number_format((float)$value['vente_trade'][1],'0','.',' ') ?></td>
-                        <td width="10%" style="font-size: large" class="text-right text-danger"><?= number_format((float)$value['vente_trade'][0],'0','.',' ') ?></td>
-                    </tr>
-
-                <?php endforeach;?>
-                </tbody>
-            </table>
-        </form>
+            <?php endforeach;?>
+            </tbody>
+        </table>
     </div>
 </div>
 <script>

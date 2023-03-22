@@ -429,6 +429,11 @@ $actions = $reqEtb->fetchAll();
                 <button type="submit" name="controler" class="btn btn-danger btn-lg">Faire le contrôle des exigences
                 </button>
                 <?php if (isset($_POST['controler'])): ?>
+                    <?php if ($erreur1 && $erreur2 && $erreur3 && $erreur4 && $erreur5 && $erreur6): ?>
+                        <button type="submit" name="valider" class="btn btn-success btn-lg">Valider opération
+                        </button>
+
+                    <?php endif; ?>
                     <button type="submit" name="retour" class="btn btn-warning btn-lg">Retour
                     </button>
                 <?php endif; ?>
