@@ -32,25 +32,37 @@ foreach ($revenus_creation_agrre_crpmf as $item) {
 
 
 //calculpvalue
-$valorasiation_agrre_crpmf = (int) $bdd->query("select sum(trade.capital) from trade join achat a on trade.id_achat = a.id_achat 
-                          where a.id_garant = 1 and MONTH(trade.date_trade) = $mois")->fetchColumn();
+//recuperation du montantReeel dans import
+$reel_import_agrre_crpmf = (int) $bdd->query("select import.montant from import join achat a on import.id_achat = a.id_achat 
+                      where a.id_garant = 1 and MONTH(import.date_import) = $mois order by import.date_import desc limit 1")->fetchColumn();
+
+//recuperation de la quantite trader
+$quantiteTrader_agrre_crpmf = (int) $bdd->query("select sum(trade.quantite) from trade join achat a on trade.id_achat = a.id_achat 
+                          where  a.id_garant = 1 and MONTH(trade.date_trade) = $mois")->fetchColumn();
 
 
+//on recupère tous les montants saisies
+$montant_saisie_agrre_crpmf = (int) $bdd->query("select sum(trade.montant) from trade join achat a on trade.id_achat = a.id_achat 
+                          where  a.id_garant = 1 and MONTH(trade.date_trade) = $mois")->fetchColumn();
 
-$sum_montant_achat_agrre_crpmf = (int) $bdd->query("select sum(trade.montant) from trade join achat a on trade.id_achat = a.id_achat 
-                          where a.id_garant = 1 and MONTH(trade.date_trade) = $mois")->fetchColumn();
 
-$sum_quantite_achat_agrre_crpmf = (int) $bdd->query("select sum(trade.quantite) from trade join achat a on trade.id_achat = a.id_achat 
-                          where a.id_garant = 1 and MONTH(trade.date_trade) = $mois")->fetchColumn();
+//on recupère le nombre de saisie
+$nombres_saisie_agrre_crpmf = (int) $bdd->query("select count(trade.id_achat) from trade join achat a on trade.id_achat = a.id_achat 
+                          where  a.id_garant = 1 and MONTH(trade.date_trade) = $mois")->fetchColumn();
 
-$countNombre_achat_agrre_crpmf = (int) $bdd->query("select count(trade.id_achat) from trade join achat a on trade.id_achat = a.id_achat 
-                          where a.id_garant = 1 and MONTH(trade.date_trade) = $mois")->fetchColumn();
 
-$valorasiation_cmp_agrre_crpmf = DivisionPar0($sum_montant_achat_agrre_crpmf,$countNombre_achat_agrre_crpmf);
+$cmp_agrre_crpmf = DivisionPar0($montant_saisie_agrre_crpmf,$nombres_saisie_agrre_crpmf);
 
-$valorasiation_p_value_agrre_crpmf = $valorasiation_agrre_crpmf - ($valorasiation_cmp_agrre_crpmf * $sum_quantite_achat_agrre_crpmf);
+$montant_total_cmp_agrre_crpmf = $cmp_agrre_crpmf * $quantiteTrader_agrre_crpmf;
 
-$valorasiation_p_value_pourcentage_agrre_crpmf = 0;
+//valeurReeel
+$valeurreel_agrre_crpmf= $reel_import_agrre_crpmf * $quantiteTrader_agrre_crpmf;
+
+
+$montant_pvalue_agrre_crpmf = $valeurreel_agrre_crpmf - $montant_total_cmp_agrre_crpmf;
+
+$pourcentage_pvalue_agrre_crpmf = cal_percentage($montant_pvalue_agrre_crpmf,$valeurreel_agrre_crpmf);
+
 
 
 
@@ -59,8 +71,8 @@ $agrre_crpmf[0]=$agrre_crpmf_mois_1;
 $agrre_crpmf[1]=$agrre_crpmf_mois;
 $agrre_crpmf[2]=$agrre_crpmf_mensuelle;
 $agrre_crpmf[3]=$agrre_crpmf_annuelle;
-$agrre_crpmf[4]=$valorasiation_p_value_agrre_crpmf;
-$agrre_crpmf[5]=$valorasiation_p_value_pourcentage_agrre_crpmf;
-$agrre_crpmf[6]=$valorasiation_agrre_crpmf;
+$agrre_crpmf[4]=$montant_pvalue_agrre_crpmf;
+$agrre_crpmf[5]=$pourcentage_pvalue_agrre_crpmf;
+$agrre_crpmf[6]=$valeurreel_agrre_crpmf;
 $agrre_crpmf[7]=$total_agrre_crpmf;
 $agrre_crpmf[8]=$total_agrre_crpmf_creation;

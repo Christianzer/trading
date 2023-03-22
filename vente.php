@@ -44,7 +44,7 @@ $arrayVente = array();
 foreach ($actionsDim as $actions){
     $libelle_achat = $bdd->query("select libelle_achat from achat where  id_achat = {$actions['id_achat']}")->fetchColumn();
 
-    $capital = $bdd->query("select sum(capital),sum(quantite) from trade where id_achat = {$actions['id_achat']}")->fetch();
+    $capital = $bdd->query("select sum(montant),sum(quantite) from trade where id_achat = {$actions['id_achat']}")->fetch();
     $nbreInsert = $bdd->query("select count(id_trade) from trade where id_achat = {$actions['id_achat']}")->fetchColumn();
     $montantNette = $capital[0];
     $quantite = $capital[1];

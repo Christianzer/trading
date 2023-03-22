@@ -109,6 +109,13 @@ include "calcul/dette_brmv.php";
 include "calcul/action_vrm.php";
 
 
+function cal_percentage($num_amount, $num_total) {
+    $count1 = DivisionPar0($num_amount,$num_total);
+    $count2 = $count1 * 100;
+    return $count2;
+}
+
+
 function roundElement($type,$data){
 
 
